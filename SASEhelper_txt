@@ -1,0 +1,35 @@
+--* Heirarchy *--
+
+struct apicall {
+    string uri;
+    string response_code;
+    string status;
+}
+
+
+struct gateway {
+   string fqdn;
+
+   struct discover;
+   struct prelogin;
+   struct login;
+
+   string status;
+}
+
+
+struct portal {
+    string fqdn;
+    string enterprise;
+    string user;
+    string ca-cert;
+
+    struct discover;
+    struct preregister;
+    struct register;
+
+    list   gateways;
+
+    string status;
+}
+
