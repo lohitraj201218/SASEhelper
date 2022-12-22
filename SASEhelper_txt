@@ -9,6 +9,7 @@ struct apicall {
 
 struct gateway {
    string fqdn;
+   string tpasswd
 
    struct discover;
    struct prelogin;
