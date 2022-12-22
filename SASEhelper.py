@@ -19,6 +19,149 @@ headers = {
   'Authorization': 'Basic bG9oaXQxOnZlcnNhMTIz' # base64 encoded
 }
 
+
+def writeReport(p):
+    VTY_HISTORY_PATH = "http://10.192.200.11/reports/SASEhelper-history.log"
+    LOG_URL          = "http://10.192.200.11/reports/sasehelper.log"
+
+    report = r"SASEhelper-report.html"
+
+    try:
+        rpt = open(report, 'w')
+    except:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        logger.error("unable to open HTML file " + \
+                    report + " for writing")
+        logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+        sys.exit(1)
+
+    rpt.write('<html>\n')
+    rpt.write('  <head>\n')
+    rpt.write('    <title>TEST RESULT SUMMARY</title>\n')
+    rpt.write('    <style>\n')
+    rpt.write('      a:hover {\n')
+    rpt.write('        background-color: LightYellow;\n')
+    rpt.write('        text-decoration: none\n')
+    rpt.write('      }\n')
+    rpt.write('\n')
+    rpt.write('      a {\n')
+    rpt.write('        text-decoration: none\n')
+    rpt.write('      }\n')
+    rpt.write('    </style>\n')
+    rpt.write('  </head>\n')
+    rpt.write('  <body>\n')
+    rpt.write('    <div style="background-color: White;">\n')
+    rpt.write('      <h1>\n')
+    rpt.write('        <br>&nbsp; &nbsp;TEST RESULT SUMMARY <br>\n')
+    rpt.write('        <br>\n')
+    rpt.write('      </h1>\n')
+    rpt.write('    </div>\n')
+    rpt.write('    <br>\n')
+    rpt.write('    <table border="1" cellpadding="4" bgcolor="White">\n')
+    rpt.write('      <tr bgcolor="#82f58f">\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write('          <b>SERVICE</b>\n')
+    rpt.write('        </td>\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write('          <b>ACTION</b>\n')
+    rpt.write('        </td>\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write('          <b>RESPONSE</b>\n')
+    rpt.write('        </td>\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write('          <b>COMMENTS</b>\n')
+    rpt.write('        </td>\n')
+    rpt.write('      </tr>\n')
+
+
+    rpt.write('      <tr bgcolor="#82d5f5">\n')
+    rpt.write('        <td colspan="6" align="lef">\n')
+    rpt.write('          <b>PORTAL - %s</b>\n'% (p.getFqdn()))
+    rpt.write('        </td>\n')
+    rpt.write('      </tr>\n')
+
+
+    rpt.write('      <tr>\n')
+    rpt.write('        <td align="center"></td>\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write(f'          <a href="{VTY_HISTORY_PATH}">\n')
+    rpt.write('            <font color=GREEN>Discover</font>\n')
+    rpt.write('          </a>\n')
+    rpt.write('        </td>\n')
+    rpt.write(f'        <td align="center">{p.discoverStatus.getRspCode()}</td>\n', )
+    rpt.write(f'        <td align="center">{p.discoverStatus.getMsg()}</td>\n')
+    rpt.write('      </tr>\n')
+    rpt.write('      <tr>\n')
+    rpt.write('        <td align="center"></td>\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write(f'          <a href="{VTY_HISTORY_PATH}">\n')
+    rpt.write('            <font color=GREEN>Pre-register</font>\n')
+    rpt.write('          </a>\n')
+    rpt.write('        </td>\n')
+    rpt.write(f'        <td align="center">{p.preRegisterStatus.getRspCode()}</td>\n')
+    rpt.write(f'        <td align="center">{p.preRegisterStatus.getMsg()}</td>\n')
+    rpt.write('      </tr>\n')
+    rpt.write('      <tr>\n')
+    rpt.write('        <td align="center"></td>\n')
+    rpt.write('        <td align="center">\n')
+    rpt.write(f'          <a href="{VTY_HISTORY_PATH}">\n')
+    rpt.write('            <font color=GREEN>Register</font>\n')
+    rpt.write('          </a>\n')
+    rpt.write('        </td>\n')
+    rpt.write(f'        <td align="center">{p.registerStatus.getRspCode()}</td>\n')
+    rpt.write(f'        <td align="center">{p.registerStatus.getMsg()}</td>\n')
+    rpt.write('      </tr>\n')
+
+
+    for gw in p.gateways:
+        rpt.write('      <tr bgcolor="#82d5f5">\n')
+        rpt.write('        <td colspan="6" align="lef">\n')
+        rpt.write(f'          <b>GATEWAY - {gw.getName()}</b>\n')
+        rpt.write('        </td>\n')
+        rpt.write('      </tr>\n')
+
+
+        rpt.write('      <tr>\n')
+        rpt.write('        <td align="center"></td>\n')
+        rpt.write('        <td align="center">\n')
+        rpt.write(f'          <a href="{VTY_HISTORY_PATH}">\n',)
+        rpt.write('            <font color=GREEN>Discover</font>\n')
+        rpt.write('          </a>\n')
+        rpt.write('        </td>\n')
+        rpt.write(f'        <td align="center">{gw.discoverStatus.getRspCode()}</td>\n')
+        rpt.write(f'        <td align="center">{gw.discoverStatus.getMsg()}</td>\n')
+        rpt.write('      </tr>\n')
+        rpt.write('      <tr>\n')
+        rpt.write('        <td align="center"></td>\n')
+        rpt.write('        <td align="center">\n')
+        rpt.write(f'          <a href="{VTY_HISTORY_PATH}">\n')
+        rpt.write('            <font color=GREEN>Pre-Login</font>\n')
+        rpt.write('          </a>\n')
+        rpt.write('        </td>\n')
+        rpt.write(f'        <td align="center">{gw.preLoginStatus.getRspCode()}</td>\n')
+        rpt.write(f'        <td align="center">{gw.preLoginStatus.getMsg()}</td>\n')
+        rpt.write('      </tr>\n')
+        rpt.write('      <tr>\n')
+        rpt.write('        <td align="center"></td>\n')
+        rpt.write('        <td align="center">\n')
+        rpt.write(f'          <a href="{VTY_HISTORY_PATH}">\n')
+        rpt.write('            <font color=GREEN>Login</font>\n')
+        rpt.write('          </a>\n')
+        rpt.write('        </td>\n')
+        rpt.write(f'        <td align="center">{gw.loginStatus.getRspCode()}</td>\n')
+        rpt.write(f'        <td align="center">{gw.loginStatus.getMsg()}</td>\n')
+        rpt.write('      </tr>\n')
+
+    rpt.write(f'    <br> Test Case Log : Click <a href={LOG_URL}>here</a> to access test case log <br>\n')
+    rpt.write(f'    <br> Test Case VTY history : Click <a href={VTY_HISTORY_PATH}>here</a> to access test case VTY history output <br>\n')
+    rpt.write('    <br> NOTICE: Internal Use Only - Versa Networks. All Rights Reserved. <br>\n')
+    rpt.write('    <i>**This report is auto-generated at: 2022-12-14 11:22:06 </i>\n')
+
+    rpt.write('    </table>\n')
+    rpt.write('  </body>\n')
+    rpt.write('</html>\n')
+    return
+
 # Get command line arguments
 def addOptions():
     o_parser = OptionParser()
@@ -72,7 +215,8 @@ class status:
 
 class portal:
 
-    def __init__(self):
+    def __init__(self, fqdn):
+        self.fqdn = fqdn
         self.gateways = []
 
     def setFqdn(self, fqdn):
@@ -117,7 +261,7 @@ class portal:
 
         if not rspCode.text == "200":
             logger.error("Invalid reponse, cannot proceed")
-            sys.exit(1)
+            return
 
         gws = t.find('gateways')
         for gw in gws.findall('gateway'):
@@ -270,11 +414,25 @@ def main():
     org  = c_options.enterprise
     user = c_options.user
 
-    p = portal()
+    p = portal(fqdn)
 
     p.discover(fqdn, org, user)
+    if p.discoverStatus.getRspCode() != "200":
+        logger.error("discover failed")
+        writeReport(p)
+        sys.exit(1)
+
     p.preRegister(fqdn, org, user)
+    if p.preRegisterStatus.getRspCode() != "401":
+        logger.error("preRegister failed")
+        writeReport(p)
+        sys.exit(1)
+
     p.register(fqdn, org, user)
+    if p.registerStatus.getRspCode() != "200":
+        logger.error("register failed")
+        writeReport(p)
+        sys.exit(1)
 
     if p.gateways:
         for gw in p.gateways:
@@ -285,6 +443,7 @@ def main():
             logger.debug("============== %s : %s ===============",
                          gw.getName(), gw.getTpasswd())
 
+    writeReport(p)
 
 if __name__ == '__main__':
     main()
