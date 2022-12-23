@@ -1,0 +1,184 @@
+<html>
+  <head>
+    <title>TEST RESULT SUMMARY</title>
+    <style>
+      a:hover {
+        background-color: LightYellow;
+        text-decoration: none
+      }
+
+      a {
+        text-decoration: none
+      }
+    </style>
+  </head>
+  <body>
+    <div style="background-color: White;">
+      <h1>
+        <br>&nbsp; &nbsp;TEST RESULT SUMMARY <br>
+        <br>
+      </h1>
+    </div>
+    <br>
+    <table border="1" cellpadding="4" bgcolor="White">
+      <tr bgcolor="#82f58f">
+        <td align="center">
+          <b>SERVICE</b>
+        </td>
+        <td align="center">
+          <b>ACTION</b>
+        </td>
+        <td align="center">
+          <b>RESPONSE</b>
+        </td>
+        <td align="center">
+          <b>COMMENTS</b>
+        </td>
+      </tr>
+      <tr bgcolor="#82d5f5">
+        <td colspan="6" align="lef">
+          <b>PORTAL - vsa.gpversa.local</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Discover</font>
+          </a>
+        </td>
+        <td align="center">200</td>
+        <td align="center">Success</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Pre-register</font>
+          </a>
+        </td>
+        <td align="center">401</td>
+        <td align="center">Login required</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Register</font>
+          </a>
+        </td>
+        <td align="center">200</td>
+        <td align="center">Success</td>
+      </tr>
+      <tr bgcolor="#82d5f5">
+        <td colspan="6" align="lef">
+          <b>GATEWAY - SERVER2</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Discover</font>
+          </a>
+        </td>
+        <td align="center">200</td>
+        <td align="center">Success</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Pre-Login</font>
+          </a>
+        </td>
+        <td align="center">401</td>
+        <td align="center">Login required</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Login</font>
+          </a>
+        </td>
+        <td align="center">200</td>
+        <td align="center">Success, Tunnel pwd: 71d75c08</td>
+      </tr>
+      <tr bgcolor="#82d5f5">
+        <td colspan="6" align="lef">
+          <b>GATEWAY - SERVER3</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Discover</font>
+          </a>
+        </td>
+        <td align="center">0</td>
+        <td align="center">Gateway not reachable</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Pre-Login</font>
+          </a>
+        </td>
+        <td align="center">0</td>
+        <td align="center">NA</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Login</font>
+          </a>
+        </td>
+        <td align="center">0</td>
+        <td align="center">NA</td>
+      </tr>
+      <tr bgcolor="#82d5f5">
+        <td colspan="6" align="lef">
+          <b>GATEWAY - SJC_SA_GW</b>
+        </td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Discover</font>
+          </a>
+        </td>
+        <td align="center">200</td>
+        <td align="center">Success</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Pre-Login</font>
+          </a>
+        </td>
+        <td align="center">401</td>
+        <td align="center">Login required</td>
+      </tr>
+      <tr>
+        <td align="center"></td>
+        <td align="center">
+          <a href="http://10.192.200.11/reports/SASEhelper-history.log">
+            <font color=GREEN>Login</font>
+          </a>
+        </td>
+        <td align="center">200</td>
+        <td align="center">Success, Tunnel pwd: c4b89401</td>
+      </tr>
+    </table>
+    <br> Test Case Log : Click <a href=http://10.192.200.11/reports/sasehelper.log>here</a> to access test case log <br>
+    <br> Test Case VTY history : Click <a href=http://10.192.200.11/reports/SASEhelper-history.log>here</a> to access test case VTY history output <br>
+    <br> NOTICE: Internal Use Only - Versa Networks. All Rights Reserved. <br>
+    <i>**This report is auto-generated at: 2022-12-14 11:22:06 </i>
+  </body>
+</html>

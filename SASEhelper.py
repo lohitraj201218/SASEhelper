@@ -17,6 +17,7 @@ VSH_CONNECT_CMD  = "./versathon/getAllHistory.sh"
 GET_HISTORY_BY_ID_CMD = "./versathon/getHistoryById.sh "
 SHOW_HISTORY_ALL_CMD = "show saccess session history all"
 SHOW_HISTORY_ID_CMD  = "show saccess session history id "
+SASEHelper_REPORT_PATH = "http://10.192.200.11/reports/SASEhelper-report.html"
 
 logging.basicConfig(filename='../reports/sasehelper.log', filemode='a',
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -484,7 +485,7 @@ class gateway:
             #exc_type, exc_value, exc_traceback = sys.exc_info()
             logger.error("discover failed ")
             self.discoverStatus.setRspCode("0")
-            self.discoverStatus.setMsg(f"Gateway not reachable,")
+            self.discoverStatus.setMsg(f"Gateway not reachable")
             #logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
             return 0
 
@@ -571,6 +572,9 @@ def main():
 
     #generate report
     writeReport(p)
+    print("---------------------------------------------------------------------------\n")
+    print(f"Report can be found @ {SASEHelper_REPORT_PATH} \n")
+    print("---------------------------------------------------------------------------\n")
 
 if __name__ == '__main__':
     main()
