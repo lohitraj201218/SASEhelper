@@ -249,7 +249,14 @@ class portal:
     def register(self, fqdn, org, user):
         logger.info("========== R E G I S T E R =============")
         registerUrl = f"https://{fqdn}/secure-access/services/portal?ent_name={org}&action=register&username={user}"
-        response = requests.request("GET", registerUrl, headers=headers, data=payload, verify=False)
+        try:
+            response = requests.request("GET", registerUrl, headers=headers, data=payload, verify=False)
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            logger.error("Registration failed ")
+            self.preRegisterStatus.setMsg(f"Register failed, {exc_value}")
+            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            return 0
 
         logger.debug(response.text)
 
@@ -258,8 +265,10 @@ class portal:
         logger.debug("Response Code: %s", rspCode.text)
 
         if not rspCode.text == "200":
+            self.registerStatus.setRspCode(rspCode.text)
+            self.registerStatus.setMsg(httpCodeStr(rspCode.text))
             logger.error("Invalid reponse, cannot proceed")
-            return
+            return 0
 
         gws = t.find('gateways')
         for gw in gws.findall('gateway'):
@@ -279,7 +288,14 @@ class portal:
     def preRegister(self, fqdn, org, user):
         logger.info("========== P R E R E G I S T E R =============")
         preregisterUrl = f"https://{fqdn}/secure-access/services/portal?action=preregister&ent_name={org}&username={user}"
-        response = requests.request("GET", preregisterUrl, verify=False)
+        try:
+            response = requests.request("GET", preregisterUrl, verify=False)
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            logger.error("preRegister failed ")
+            self.preRegisterStatus.setMsg(f"preRegister failed, {exc_value}")
+            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            return 0
 
         logger.debug("Preregister request,\n %s", response.text)
 
@@ -295,13 +311,26 @@ class portal:
     def discover(self, fqdn, org, user):
         logger.info("========== D I S C O V E R =============")
         discoverUrl = f"https://{fqdn}/secure-access/services/portal?ent_name={org}&action=discover&username={user}"
-        response = requests.request("GET", discoverUrl, verify=False)
+        try:
+            response = requests.request("GET", discoverUrl, verify=False)
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            logger.error("discover failed ")
+            self.preRegisterStatus.setMsg(f"discover failed, {exc_value}")
+            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            return 0
 
         logger.debug("Discover request,\n %s", response.text)
 
         t = fromstring(response.text.encode('utf-8'))
         rspCode = t.xpath('/versa-secure-access/discover/code').pop()
         logger.debug("Response Code: %s", rspCode.text)
+
+        if not rspCode.text == "200":
+            self.discoverStatus.setRspCode(rspCode.text)
+            self.discoverStatus.setMsg(httpCodeStr(rspCode.text))
+            logger.error("Invalid reponse, cannot proceed")
+            return 0
 
         self.discoverStatus.setRspCode(rspCode.text)
         self.discoverStatus.setMsg(httpCodeStr(rspCode.text))
@@ -315,6 +344,7 @@ class gateway:
         self.host = host
         self.cp_url = cp_url
         self.gw = gw
+        self.tPasswd = "NA"
         self.gatewayStatus = status()
         self.discoverStatus = status()
         self.preLoginStatus = status()
@@ -348,7 +378,14 @@ class gateway:
     def login(self, cp_url, org, user):
         logger.info("========== L O G I N =============")
         loginUrl = f"{cp_url}?action=login&ent_name={org}&username={user}&ep_protection=Windows+Defender&api_version=2&private_ip=10.192.45.250&eap_id=lohit1%40versa&detect_trusted_network=true "
-        response = requests.request("GET", loginUrl, headers=headers, data=payload, verify=False)
+        try:
+            response = requests.request("GET", loginUrl, headers=headers, data=payload, verify=False)
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            logger.error("login failed ")
+            self.preRegisterStatus.setMsg(f"login failed, {exc_value}")
+            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            return 0
 
         logger.debug("Login request,\n %s", response.text)
 
@@ -368,7 +405,14 @@ class gateway:
     def preLogin(self, cp_url, org, user):
         logger.info("========== P R E L O G I N =============")
         preloginUrl = f"{cp_url}?action=prelogin&ent_name={org}&username={user}&api_version=2&device_mac=52-54-00-EE-A0-45&cb_url=com.versa.sase%3A%2F%2FsecureAccessClient&ipsec_profile_id=versa-vpn&private_ip=10.192.45.250&eap_id=lohit1%40versa&detect_trusted_network=true"
-        response = requests.request("GET", preloginUrl, verify=False)
+        try:
+            response = requests.request("GET", preloginUrl, verify=False)
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            logger.error("preLogin failed ")
+            self.preRegisterStatus.setMsg(f"preLogin failed, {exc_value}")
+            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            return 0
 
         logger.debug("Prelogin request,\n %s", response.text)
 
@@ -385,13 +429,26 @@ class gateway:
 
         logger.info("========== D I S C O V E R =============")
         discoverUrl = f"{cp_url}?action=discover&ent_name={org}&username={user}"
-        response = requests.request("GET", discoverUrl, verify=False)
+        try:
+            response = requests.request("GET", discoverUrl, verify=False)
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            logger.error("discover failed ")
+            self.preRegisterStatus.setMsg(f"discover failed, {exc_value}")
+            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            return 0
 
         logger.debug("Gateway discover request,\n %s", response.text)
 
         t = fromstring(response.text.encode('utf-8'))
         rspCode = t.xpath('/versa-secure-access/discover/code').pop()
         logger.debug("Response Code: %s", rspCode.text)
+
+        if not rspCode.text == "200":
+            self.discoverStatus.setRspCode(rspCode.text)
+            self.discoverStatus.setMsg(httpCodeStr(rspCode.text))
+            logger.error("Invalid reponse, cannot proceed")
+            return 0
 
         self.discoverStatus.setRspCode(rspCode.text)
         self.discoverStatus.setMsg(httpCodeStr(rspCode.text))
@@ -415,19 +472,19 @@ def main():
     p = portal(fqdn)
 
     p.discover(fqdn, org, user)
-    if p.discoverStatus.getRspCode() != "200":
+    if not p.discoverStatus.getRspCode():
         logger.error("discover failed")
         writeReport(p)
         sys.exit(1)
 
     p.preRegister(fqdn, org, user)
-    if p.preRegisterStatus.getRspCode() != "401":
+    if not p.preRegisterStatus.getRspCode():
         logger.error("preRegister failed")
         writeReport(p)
         sys.exit(1)
 
     p.register(fqdn, org, user)
-    if p.registerStatus.getRspCode() != "200":
+    if not p.registerStatus.getRspCode():
         logger.error("register failed")
         writeReport(p)
         sys.exit(1)
@@ -435,8 +492,12 @@ def main():
     if p.gateways:
         for gw in p.gateways:
             logger.debug("==============*********==============")
-            gw.discover(gw.cp_url, org, user)
-            gw.preLogin(gw.cp_url, org, user)
+            if not gw.discover(gw.cp_url, org, user):
+                continue
+
+            if not gw.preLogin(gw.cp_url, org, user):
+                continue
+
             gw.login(gw.cp_url, org, user)
             logger.debug("============== %s : %s ===============",
                          gw.getName(), gw.getTpasswd())
