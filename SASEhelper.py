@@ -194,9 +194,9 @@ def httpCodeStr(code):
         return "Failure for other reasons"
 
 class status:
-    def __inti__(self):
-        self.code = "500"
-        self.msg = "NA"
+    def __init__(self, code, msg):
+        self.code = code
+        self.msg = msg
 
     def setRspCode(self, code):
         self.code = code
@@ -216,10 +216,10 @@ class portal:
     def __init__(self, fqdn):
         self.fqdn = fqdn
         self.gateways = []
-        self.portalStatus = status()
-        self.discoverStatus = status()
-        self.preRegisterStatus = status()
-        self.registerStatus = status()
+        self.portalStatus = status("0", "NA")
+        self.discoverStatus = status("0", "NA")
+        self.preRegisterStatus = status("0", "NA")
+        self.registerStatus = status("0", "NA")
 
     def setFqdn(self, fqdn):
         self.fqdn = fqdn
@@ -345,10 +345,10 @@ class gateway:
         self.cp_url = cp_url
         self.gw = gw
         self.tPasswd = "NA"
-        self.gatewayStatus = status()
-        self.discoverStatus = status()
-        self.preLoginStatus = status()
-        self.loginStatus = status()
+        self.gatewayStatus = status("0", "NA")
+        self.discoverStatus = status("0", "NA")
+        self.preLoginStatus = status("0", "NA")
+        self.loginStatus = status("0", "NA")
 
     def setName(self, name):
         self.name = name
@@ -432,10 +432,11 @@ class gateway:
         try:
             response = requests.request("GET", discoverUrl, verify=False)
         except:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
+            #exc_type, exc_value, exc_traceback = sys.exc_info()
             logger.error("discover failed ")
-            self.preRegisterStatus.setMsg(f"discover failed, {exc_value}")
-            logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
+            self.discoverStatus.setRspCode("0")
+            self.discoverStatus.setMsg(f"Gateway not reachable,")
+            #logger.error(repr(traceback.format_exception_only(exc_type, exc_value)))
             return 0
 
         logger.debug("Gateway discover request,\n %s", response.text)
