@@ -119,8 +119,6 @@ def writeReport(p):
         rpt.write(f'          <b>GATEWAY - {gw.getName()}</b>\n')
         rpt.write('        </td>\n')
         rpt.write('      </tr>\n')
-
-
         rpt.write('      <tr>\n')
         rpt.write('        <td align="center"></td>\n')
         rpt.write('        <td align="center">\n')
@@ -152,12 +150,12 @@ def writeReport(p):
         rpt.write(f'        <td align="center">{gw.loginStatus.getMsg()}</td>\n')
         rpt.write('      </tr>\n')
 
+    rpt.write('    </table>\n')
     rpt.write(f'    <br> Test Case Log : Click <a href={LOG_URL}>here</a> to access test case log <br>\n')
     rpt.write(f'    <br> Test Case VTY history : Click <a href={VTY_HISTORY_PATH}>here</a> to access test case VTY history output <br>\n')
     rpt.write('    <br> NOTICE: Internal Use Only - Versa Networks. All Rights Reserved. <br>\n')
     rpt.write('    <i>**This report is auto-generated at: 2022-12-14 11:22:06 </i>\n')
 
-    rpt.write('    </table>\n')
     rpt.write('  </body>\n')
     rpt.write('</html>\n')
     return
@@ -218,6 +216,10 @@ class portal:
     def __init__(self, fqdn):
         self.fqdn = fqdn
         self.gateways = []
+        self.portalStatus = status()
+        self.discoverStatus = status()
+        self.preRegisterStatus = status()
+        self.registerStatus = status()
 
     def setFqdn(self, fqdn):
         self.fqdn = fqdn
@@ -243,10 +245,6 @@ class portal:
     def getCacert(self):
         return self.cacert
 
-    portalStatus = status()
-    discoverStatus = status() 
-    preRegisterStatus = status()
-    registerStatus = status()
 
     def register(self, fqdn, org, user):
         logger.info("========== R E G I S T E R =============")
@@ -317,6 +315,10 @@ class gateway:
         self.host = host
         self.cp_url = cp_url
         self.gw = gw
+        self.gatewayStatus = status()
+        self.discoverStatus = status()
+        self.preLoginStatus = status()
+        self.loginStatus = status()
 
     def setName(self, name):
         self.name = name
@@ -342,10 +344,6 @@ class gateway:
     def getTpasswd(self):
         return self.tPasswd
 
-    gatewayStatus = status()
-    discoverStatus = status() 
-    preLoginStatus = status()
-    loginStatus = status()
 
     def login(self, cp_url, org, user):
         logger.info("========== L O G I N =============")
@@ -358,12 +356,12 @@ class gateway:
         rspCode = t.xpath('/versa-secure-access/login/code').pop()
         logger.debug("Response Code: %s", rspCode.text)
 
-        rspCode = t.xpath('/versa-secure-access/tunnel-password').pop()
-        logger.debug("Tunnel password: %s", rspCode.text)
-        self.setTpasswd(rspCode.text)
+        tPasswd = t.xpath('/versa-secure-access/tunnel-password').pop()
+        logger.debug("Tunnel password: %s", tPasswd.text)
+        self.setTpasswd(tPasswd.text)
 
         self.loginStatus.setRspCode(rspCode.text)
-        self.loginStatus.setMsg(httpCodeStr(rspCode.text))
+        self.loginStatus.setMsg(httpCodeStr(rspCode.text) + f", Tunnel pwd: {tPasswd.text}")
 
         return rspCode.text
 
